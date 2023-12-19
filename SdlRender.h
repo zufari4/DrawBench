@@ -1,19 +1,19 @@
 #pragma once
 #include "IRender.h"
-#include <SDL2/SDL_render.h>
 #include <vector>
 #include <map>
 
 struct SDL_Renderer;
 struct SDL_Window;
+struct SDL_Vertex;
 
 class SdlRender : public IRender
 {
 public:
     SdlRender(SDL_Window* window);
-    bool init(int saplesCount, Color clearColor) override;
-    void beginFrame() override;
-    void endFrame() override;
+    bool init(int saplesCount, Color clearColor);
+    void beginFrame();
+    void endFrame();
     void drawShape(const BaseShape& shape) override;
 private:
     void getVertexes(const BaseShape& shape, SDL_Vertex** pvb, int** ppib, int& vbCount, int& ibCount);

@@ -10,6 +10,7 @@ DrawBench::DrawBench(IApplication& app)
     : app_(app)
     , render_(app.getRender())
     , countFrames_(0)
+    , startDraw_(0)
 {
 }
 
@@ -35,24 +36,34 @@ void DrawBench::run(int countShapes, float shapeSize)
     float startShapeSize = shapeSize * 0.1f;
     bool createCircle = false;
 
-    for (float posX = 0; posX < (float)w; posX += stepX)
-        for (float posY = 0; posY < (float)h; posY += stepY)
+    for (float posX = 0; posX < (float)w;) {
+        for (float posY = 0; posY < (float)h;)
         {
             createCircle = !createCircle;
             ShapeBasePtr shape;
             if (createCircle) {
-                shape = std::make_unique<CircleShape>(startShapeSize*0.5f, posX, posY, randColor());
+                shape = std::make_unique<CircleShape>(startShapeSize * 0.5f, posX, posY, randColor());
             }
             else {
-                float x1 = posX - startShapeSize*0.5f;
-                float y1 = posY - startShapeSize*0.5f;
-                float x2 = posX + startShapeSize*0.5f;
-                float y2 = posY + startShapeSize*0.5f;
-                shape = std::make_unique<RectagleShape>(x1, y1, x2, y2, randColor());
+                shape = std::make_unique<RectagleShape>(posX, posY, startShapeSize, startShapeSize, randColor());
             }
+            shape->angle = randU8();
             shapes_.push_back(std::move(shape));
-            startShapeSize += 0.1;
+            if (startShapeSize < stepY) {
+                posY += startShapeSize;
+            }
+            else {
+                posY += stepY;
+            }
+            startShapeSize += 0.1f;
         }
+        if (startShapeSize < stepX) {
+            posX += startShapeSize;
+        }
+        else {
+            posX += stepX;
+        }
+    }
 
     lastFrameCheck_ = Clock::now();
     app_.run(
@@ -67,8 +78,10 @@ void DrawBench::drawFrame()
     const auto& now = Clock::now();
 
     startDraw_ = hiTimer_.now();
-    for (const auto& shape : shapes_)
+    for (const auto& shape : shapes_) {
+        shape->angle += 0.01f;
         render_.drawShape(*shape);
+    }
 
     if (now - lastFrameCheck_ > oneSec) {
         double drawTime = hiTimer_.now() - startDraw_;
@@ -82,7 +95,7 @@ void DrawBench::drawFrame()
 
 void DrawBench::keyDownCallback(int key)
 {
-    if (key == 41) {
+    if (key == 41 || key == 256) {
         app_.stop();
     }
 }

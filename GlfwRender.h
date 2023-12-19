@@ -4,9 +4,9 @@
 class GlfwRender : public IRender
 {
 public:
-    bool init(int saplesCount, Color clearColor) override;
-    void beginFrame() override;
-    void endFrame() override;
+    bool init(int saplesCount, Color clearColor);
+    void beginFrame();
+    void endFrame();
     void drawShape(const BaseShape& shape) override;
 };
 

@@ -16,4 +16,18 @@ union Color
     } _;
 };
 
-#define EXP_RGBA(color) color._.r, color._.g, color._.b, color._.a
+struct Color4f
+{
+    Color4f(Color c)
+        : r(c._.r / 255.0f)
+        , g(c._.g / 255.0f)
+        , b(c._.b / 255.0f)
+        , a(c._.a / 255.0f)
+    {}
+    float r;
+    float g;
+    float b;
+    float a;
+};
+
+#define EXP_RGBA(color) color.r, color.g, color.b, color.a

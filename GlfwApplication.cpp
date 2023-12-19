@@ -5,7 +5,7 @@
 bool GlfwApplication::initialize(int w, int h, int samplesCount, Color clearColor)
 {
     render_ = std::make_unique<GlfwRender>();
-    return render_->init(samplesCount, clearColor);
+    return ((GlfwRender*)render_.get())->init(samplesCount, clearColor);
 }
 
 void GlfwApplication::run(DrawFrameCallback drawFrameCallback, KeyDownCallback keyDownKallback)

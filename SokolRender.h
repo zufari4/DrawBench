@@ -1,12 +1,16 @@
 #pragma once
 #include "IRender.h"
 
+class SokolApplication;
+
 class SokolRender : public IRender
 {
 public:
-    bool init(int saplesCount, Color clearColor) override;
-    void beginFrame() override;
-    void endFrame() override;
+    SokolRender(SokolApplication& app);
     void drawShape(const BaseShape& shape) override;
+
+private:
+    SokolApplication* app_;
+
 };
 

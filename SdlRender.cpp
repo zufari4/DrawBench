@@ -39,7 +39,7 @@ bool SdlRender::init(int saplesCount, Color clearColor)
 
 void SdlRender::beginFrame()
 {
-    SDL_SetRenderDrawColor(renderer_, EXP_RGBA(clearColor_));
+    SDL_SetRenderDrawColor(renderer_, EXP_RGBA(clearColor_._));
     SDL_RenderClear(renderer_);
 }
 
@@ -50,7 +50,7 @@ void SdlRender::endFrame()
 
 SDL_Color getColor(Color c)
 {
-    return { EXP_RGBA(c) };
+    return { EXP_RGBA(c._) };
 }
 
 void makeCircleVertexes(const CircleShape& shape, SDL_Vertex* vb, int* ib, int& vbCount, int& ibCount)
@@ -93,22 +93,24 @@ void makeRectVertexes(const RectagleShape& shape, SDL_Vertex* vb, int* ib, int& 
 {
     vbCount = 4;
     ibCount = 6;
+    float hw = shape.w * 0.5f;
+    float hh = shape.h * 0.5f;
 
     vb[0].color = getColor(shape.color);
-    vb[0].position.x = shape.x1;
-    vb[0].position.y = shape.y1;
+    vb[0].position.x = shape.cx - hw;
+    vb[0].position.y = shape.cy - hh;
 
     vb[1].color = getColor(shape.color);
-    vb[1].position.x = shape.x2;
-    vb[1].position.y = shape.y1;
+    vb[1].position.x = shape.cx + hw;
+    vb[1].position.y = shape.cy - hh;
 
     vb[2].color = getColor(shape.color);
-    vb[2].position.x = shape.x2;
-    vb[2].position.y = shape.y2;
+    vb[2].position.x = shape.cx + hw;
+    vb[2].position.y = shape.cy + hh;
 
     vb[3].color = getColor(shape.color);
-    vb[3].position.x = shape.x1;
-    vb[3].position.y = shape.y2;
+    vb[3].position.x = shape.cx - hw;
+    vb[3].position.y = shape.cy + hh;
 
     ib[0] = 0;
     ib[1] = 1;

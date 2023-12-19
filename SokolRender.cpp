@@ -1,21 +1,14 @@
 #include "SokolRender.h"
+#include "SokolApplication.h"
 
-bool SokolRender::init(int saplesCount, Color clearColor)
-{
-    return true;
-}
 
-void SokolRender::beginFrame()
-{
-
-}
-
-void SokolRender::endFrame()
+SokolRender::SokolRender(SokolApplication& app)
+    : app_(&app)
 {
 
 }
 
 void SokolRender::drawShape(const BaseShape& shape)
 {
-
+    app_->drawShape(shape);
 }

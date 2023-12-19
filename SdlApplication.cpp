@@ -22,7 +22,7 @@ bool SdlApplication::initialize(int w, int h, int samplesCount, Color clearColor
     }
 
     render_ = std::make_unique<SdlRender>(window_);
-    if (!render_->init(samplesCount, clearColor)) {
+    if (!((SdlRender*)render_.get())->init(samplesCount, clearColor)) {
         return false;
     }
     return true;
@@ -48,9 +48,9 @@ void SdlApplication::run(DrawFrameCallback drawFrameCallback, KeyDownCallback ke
             }
         }
 
-        render_->beginFrame();
+        ((SdlRender*)render_.get())->beginFrame();
         drawFrameCallback();
-        render_->endFrame();
+        ((SdlRender*)render_.get())->endFrame();
     }
 }
 
